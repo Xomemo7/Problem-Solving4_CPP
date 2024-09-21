@@ -1,0 +1,10 @@
+int SumOfDigits(int Number) 
+{
+    // Base case: if the array has only one element, return that element
+    if (Number == 0)
+    {
+        return 0;
+    }
+    int Digit = Number % 10;
+    return Digit += SumOfDigits(floor(Number /10));
+}

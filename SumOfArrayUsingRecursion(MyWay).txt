@@ -1,0 +1,8 @@
+float sum(float arr[],int length)
+{
+    if (length == 0)
+        return 0;
+
+    return arr[length - 1] + sum(arr, length - 1);
+
+}

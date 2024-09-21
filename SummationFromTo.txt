@@ -1,0 +1,6 @@
+int SummationFromTo(int From, int To)
+{
+    if (To == From)
+        return From;
+    return To+=SummationFromTo(From, To - 1);
+}
