@@ -1,0 +1,81 @@
+#include <iostream>
+using namespace std;
+int ReadYear()
+{
+    int Year;
+    cout << "Enter a year: ";
+    cin >> Year;
+    return Year;
+}
+int ReadMonth()
+{
+    int Month;
+    do
+    {
+        cout << "Enter a month: ";
+        cin >> Month;
+    } while (Month < 1 || Month>12);
+    return Month;
+}
+int DayOrder(int Year, int Month, int Day)
+{
+    int a = floor((14 - Month) / 12);
+    int y = Year - a;
+    int m = Month + 12 * a - 2;
+    int d = Day + y + floor(y / 4) - floor(y / 100) + floor(y / 400) + floor(31 * m / 12);
+    int DayIndex = d % 7;
+    return DayIndex;
+}
+bool IsLeapYear(int Year)
+{
+    return (Year % 400 == 0) || ((Year % 4 == 0) && (Year % 100 != 0));
+}
+int DaysInMonth(int Year, int Month)
+{
+    switch (Month)
+    {
+    case 1:case 3: case 5: case 7: case 8: case 10: case 12: return 31; break;
+    case 2: return (IsLeapYear(Year)) ? 29 : 28; break;
+    default:return 30;
+    }
+}
+string DayOrderAsText(int DayIndex)
+{
+    string arrDayNames[] = { "Sun" ,"Mon" ,"Tue","Wed","Thu","Fri","Sat" };
+    return arrDayNames[DayIndex];
+}
+string MonthName(int MonthOrder)
+{
+    string arrMonth[] = { " ","Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov","Dec" };
+    return arrMonth[MonthOrder];
+}
+string Tabs(int NumberOfTabs)
+{
+    string TotalTabs = "";
+    for (int i = 1; i <= NumberOfTabs; i++)
+    {
+        TotalTabs += "\t";
+    }
+    return TotalTabs;
+}
+void PrintCalender(int Year, int Month)
+{
+    cout << "\n_____________________________" << MonthName(Month) << "______________________________\n";
+    cout << "\nSun\tMon\tTue\tWed\tThu\tFri\tSat\n";
+    for (int i = 1; i <= DaysInMonth(Year, Month); i++)
+    {
+        if (i == 1)
+            cout << Tabs(DayOrder(Year, Month, 1));
+        cout << i << "\t";
+        if (DayOrderAsText(DayOrder(Year, Month, i)) == "Sat")
+            cout << endl;
+    }
+    cout << "\n______________________________________________________________\n";
+}
+int main()
+{
+    int Month = ReadMonth();
+    int Year = ReadYear();
+    PrintCalender(Year,Month);
+    return 0;
+}

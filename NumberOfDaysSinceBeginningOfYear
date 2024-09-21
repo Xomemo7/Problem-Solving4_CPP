@@ -1,0 +1,65 @@
+#include <iostream>
+using namespace std;
+short ReadYear()
+{
+    short Year;
+    cout << "Enter a year: ";
+    cin >> Year;
+    return Year;
+}
+short ReadMonth()
+{
+    short Month;
+    do
+    {
+        cout << "Enter a month: ";
+        cin >> Month;
+    } while (Month < 1 || Month>12);
+    return Month;
+}
+short ReadDay()
+{
+    short Day;
+    do
+    {
+        cout << "Enter a Day: ";
+        cin >> Day;
+    } while (Day < 1 || Day>31);
+    return Day;
+}
+bool IsLeapYear(short Year)
+{
+    return (Year % 400 == 0) || ((Year % 4 == 0) && (Year % 100 != 0));
+}
+int DaysInMonth(short Year, short Month)
+{
+    switch (Month)
+    {
+    case 1:case 3: case 5: case 7: case 8: case 10: case 12: return 31; break;
+    case 2: return (IsLeapYear(Year)) ? 29 : 28; break;
+    default:return 30;
+    }
+}
+short NumberOfDaysSinceBegenningOfYear(short Year,short Month,short Day)
+{
+    short TotalDays = 0;
+    for (short i = 1; i <= Month - 1; i++)
+    {
+        TotalDays += DaysInMonth(Year, i);
+    }
+    TotalDays += Day;
+    return TotalDays;
+}
+void PrintTotalNumberOfDays()
+{
+    short Year, Month, Day;
+    Day = ReadDay();
+    Month = ReadMonth();
+    Year = ReadYear();
+    cout<<"Total number of days= "<<NumberOfDaysSinceBegenningOfYear(Year, Month, Day)<<endl;
+}
+int main()
+{
+    PrintTotalNumberOfDays();
+    return 0;
+}

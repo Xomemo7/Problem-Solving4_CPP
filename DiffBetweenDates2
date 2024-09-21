@@ -1,0 +1,124 @@
+#include <iostream>
+using namespace std;
+enum enIncludeEndDay{DontIncludeEndDay, IncludeEndDay};
+struct stDate
+{
+    short Day;
+    short Month;
+    short Year;
+};
+short ReadYear()
+{
+    short Year;
+    cout << "Enter a year: ";
+    cin >> Year;
+    return Year;
+}
+short ReadMonth()
+{
+    short Month;
+    do
+    {
+        cout << "Enter a month: ";
+        cin >> Month;
+    } while (Month < 1 || Month>12);
+    return Month;
+}
+short ReadDay()
+{
+    short Day;
+    do
+    {
+        cout << "Enter a Day: ";
+        cin >> Day;
+    } while (Day < 1 || Day>31);
+    return Day;
+}
+stDate ReadDate()
+{
+    stDate Date;
+    Date.Day = ReadDay();
+    Date.Month = ReadMonth();
+    Date.Year = ReadYear();
+    return  Date;
+}
+bool IsLeapYear(short Year)
+{
+    return (Year % 400 == 0) || ((Year % 4 == 0) && (Year % 100 != 0));
+}
+short DaysInMonth(short Year, short Month)
+{
+    switch (Month)
+    {
+    case 1:case 3: case 5: case 7: case 8: case 10: case 12: return 31; break;
+    case 2: return (IsLeapYear(Year)) ? 29 : 28; break;
+    default:return 30;
+    }
+}
+short NumberOfDaysSinceBegenningOfYear(stDate Date)
+{
+    short TotalDays = 0;
+    for (short i = 1; i <= Date.Month - 1; i++)
+    {
+        TotalDays += DaysInMonth(Date.Year, i);
+    }
+    TotalDays += Date.Day;
+    return TotalDays;
+}
+bool IsDate1Less(stDate Date1, stDate Date2)
+{
+    if (Date1.Year > Date2.Year)
+        return false;
+    else if (Date1.Year < Date2.Year)
+        return true;
+    else
+    {
+        if (Date1.Month > Date2.Month)
+            return false;
+        else if (Date1.Month < Date2.Month)
+            return true;
+        else
+        {
+            if (Date1.Day > Date2.Day)
+                return false;
+            else if (Date1.Day < Date2.Day)
+                return true;
+        }
+    }
+}
+int GetDiffBetweenDates(stDate Date1, stDate Date2,bool IncludeEndDay=false)
+{
+    //date1 is less than (before) date2
+    int TotalDiffInDays = 0;
+    while (IsDate1Less(Date1, Date2))
+    {
+        if (Date1.Year == Date2.Year)
+        {
+            TotalDiffInDays += (NumberOfDaysSinceBegenningOfYear(Date2) - NumberOfDaysSinceBegenningOfYear(Date1));
+            TotalDiffInDays += (IncludeEndDay == true ? 1 : 0);
+            return TotalDiffInDays;
+        }
+        else
+        {
+            while (Date2.Year != Date1.Year)
+            {
+                if (IsLeapYear(Date1.Year))
+                    TotalDiffInDays += 366;
+                else
+                    TotalDiffInDays += 365;
+                Date1.Year++;
+            }
+        }
+    }
+}
+
+int main()
+{
+    stDate Date1 = ReadDate();
+    cout << endl;
+    stDate Date2 = ReadDate();
+    cout << endl;
+    cout << "Diff is: " << GetDiffBetweenDates(Date1, Date2)<<" days " << endl;
+    cout<<"Diff (including end day) is: " << GetDiffBetweenDates(Date1, Date2, IncludeEndDay)<< " days " << endl;
+    return 0;
+}

@@ -1,0 +1,72 @@
+#include <iostream>
+using namespace std;
+struct stDate
+{
+    short Day;
+    short Month;
+    short Year;
+};
+short ReadYear()
+{
+    short Year;
+    cout << "Enter a year: ";
+    cin >> Year;
+    return Year;
+}
+short ReadMonth()
+{
+    short Month;
+    do
+    {
+        cout << "Enter a month: ";
+        cin >> Month;
+    } while (Month < 1 || Month>12);
+    return Month;
+}
+short ReadDay()
+{
+    short Day;
+    do
+    {
+        cout << "Enter a Day: ";
+        cin >> Day;
+    } while (Day < 1 || Day>31);
+    return Day;
+}
+stDate ReadDate()
+{
+    stDate Date;
+    Date.Day = ReadDay();
+    Date.Month = ReadMonth();
+    Date.Year = ReadYear();
+    return  Date;
+}
+bool IsLeapYear(short Year)
+{
+    return (Year % 400 == 0) || ((Year % 4 == 0) && (Year % 100 != 0));
+}
+short DaysInMonth(short Year, short Month)
+{
+    switch (Month)
+    {
+    case 1:case 3: case 5: case 7: case 8: case 10: case 12: return 31; break;
+    case 2: return (IsLeapYear(Year)) ? 29 : 28; break;
+    default:return 30;
+    }
+}
+bool IsLastDayInMonth(stDate Date)
+{
+    return (Date.Day == DaysInMonth(Date.Year, Date.Month));
+}
+bool IsLastMonthInYear(short Month)
+{
+    return (Month == 12);
+}
+int main()
+{
+    stDate Date1 = ReadDate();
+    cout << endl;
+    cout << (IsLastDayInMonth(Date1) ? "is Last day of month\n" : "not Last day of month\n");
+    cout<<(IsLastMonthInYear(Date1.Month)? "is Last month of year\n" : "not Last month of year\n");
+    return 0;
+}

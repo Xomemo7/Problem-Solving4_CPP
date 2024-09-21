@@ -1,0 +1,54 @@
+#include <iostream>
+using namespace std;
+bool IsLeapYear(int Year)
+{
+    return (Year % 400 == 0) || ((Year % 4 == 0) && (Year % 100 != 0));
+}
+int ReadYear()
+{
+    int Year;
+    cout << "Enter a year: ";
+    cin >> Year;
+    return Year;
+}
+int ReadMonth()
+{
+    int Month;
+    do
+    {
+        cout << "Enter a month: ";
+        cin >> Month;
+    } while (Month<1|| Month>12);
+    return Month;
+}
+int DaysInMonth(int Year,int Month)
+{
+    int arrDays[12] = { 31,28,31,30,31,30,31,31,30,31,30,31};
+    return (Month == 2)?(IsLeapYear(Year) ? 29 : 28) : arrDays[Month-1] ;
+}
+int HoursInMonth(int Year, int Month)
+{
+    return DaysInMonth(Year,Month) * 24;
+}
+int MinutesInMonth(int Year, int Month)
+{
+    return HoursInMonth(Year, Month) * 60;
+}
+int SecondsInMonth(int Year, int Month)
+{
+    return MinutesInMonth(Year, Month) * 60;
+}
+void ShowResult()
+{
+    int Year = ReadYear();
+    int Month = ReadMonth();
+    cout << "Number of days in month [" << Month << "]: " << DaysInMonth(Year,Month) <<endl;
+    cout << "Number of hours in month [" << Month << "]: " << HoursInMonth(Year,Month) << endl;
+    cout << "Number of minutes in month [" << Month << "]: " << MinutesInMonth(Year,Month) << endl;
+    cout << "Number of seconds in month [" << Month << "]: " << SecondsInMonth(Year,Month) << endl;
+}
+int main()
+{
+    ShowResult();
+    return 0;
+}

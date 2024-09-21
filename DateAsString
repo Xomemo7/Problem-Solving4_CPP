@@ -1,0 +1,97 @@
+#include<iostream>
+#include<string>
+#include<vector>
+using namespace std;
+struct stDate
+{
+	short Day;
+	short Month;
+	short Year;
+};
+string ReadDateAsString()
+{
+	string Date;
+	cout << "Enter a date dd/mm/yyyy: ";
+	getline(cin >> ws, Date);
+	return  Date;
+}
+vector<string>SplitString(string str, string Delim)
+{
+	vector<string>vString;
+
+	short pos = 0;
+	string sWord;
+	while ((pos = str.find(Delim)) != std::string::npos)
+	{
+		sWord = str.substr(0, pos);
+		if (sWord != "")
+		{
+			vString.push_back(sWord);
+		}
+		str.erase(0, pos + Delim.length());
+	}
+	if (str != "")
+	{
+		vString.push_back(str);
+	}
+
+	return vString;
+}
+stDate StringToDate(string strDate)
+{
+	stDate Date;
+	vector<string>vDate;
+	vDate = SplitString(strDate, "/");
+	Date.Day = stoi(vDate[0]);
+	Date.Month= stoi(vDate[1]);
+	Date.Year= stoi(vDate[2]);
+	
+	return Date;
+}
+string DateToString(stDate Date)
+{
+	string strDate;
+	strDate = to_string(Date.Day) + "/" + to_string(Date.Month) + "/" + to_string(Date.Year);
+
+	return strDate;
+}
+void PrintDate(stDate Date, string Text)
+{
+	cout << Text;
+	printf("%d/%d/%d\n", Date.Day, Date.Month, Date.Year);
+}
+bool IsLeapYear(short Year)
+{
+	return (Year % 400 == 0) || ((Year % 4 == 0) && (Year % 100 != 0));
+}
+short DaysInMonth(short Year, short Month)
+{
+	switch (Month)
+	{
+	case 1:case 3: case 5: case 7: case 8: case 10: case 12: return 31; break;
+	case 2: return (IsLeapYear(Year)) ? 29 : 28; break;
+	default:return 30;
+	}
+}
+bool IsDateValid(stDate Date)
+{
+	if (Date.Year < 1)
+		return false;
+	if (Date.Month < 1 || Date.Month>12)
+		return false;
+	if (Date.Day<1 || Date.Day>DaysInMonth(Date.Year, Date.Month))
+		return false;
+	return true;
+}
+int main()
+{
+	stDate Date;
+	string strDate = ReadDateAsString();
+	Date = StringToDate(strDate);
+	cout << "\nDay: " << Date.Day<<endl;
+	cout << "Month: " << Date.Month << endl;
+	cout << "Year: " << Date.Year << endl<<endl;
+	cout << DateToString(Date);
+	
+	return 0;
+}

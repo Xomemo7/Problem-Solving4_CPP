@@ -1,0 +1,23 @@
+#include <iostream>
+using namespace std;
+bool IsYearLeap(int Year)
+{
+    if (Year % 400 == 0)
+        return true;
+    if (Year % 4 == 0 && Year % 100 != 0)
+        return true;
+    else
+        return false;
+}
+int main()
+
+{
+    int Year;
+    cout << "Enter a year: ";
+    cin >> Year;
+    if (IsYearLeap(Year))
+        cout << "is leap";
+    else
+        cout << "is not leap";
+    return 0;
+}

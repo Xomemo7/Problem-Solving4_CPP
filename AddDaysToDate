@@ -1,0 +1,112 @@
+#include <iostream>
+using namespace std;
+struct stDate
+{
+    short Day;
+    short Month;
+    short Year;
+};
+short ReadYear()
+{
+    short Year;
+    cout << "Enter a year: ";
+    cin >> Year;
+    return Year;
+}
+short ReadMonth()
+{
+    short Month;
+    do
+    {
+        cout << "Enter a month: ";
+        cin >> Month;
+    } while (Month < 1 || Month>12);
+    return Month;
+}
+short ReadDay()
+{
+    short Day;
+    do
+    {
+        cout << "Enter a Day: ";
+        cin >> Day;
+    } while (Day < 1 || Day>31);
+    return Day;
+}
+stDate ReadDate()
+{
+    stDate Date;
+    Date.Day = ReadDay();
+    Date.Month = ReadMonth();
+    Date.Year = ReadYear();
+    return  Date;
+}
+bool IsLeapYear(short Year)
+{
+    return (Year % 400 == 0) || ((Year % 4 == 0) && (Year % 100 != 0));
+}
+int DaysInMonth(short Year, short Month)
+{
+    switch (Month)
+    {
+    case 1:case 3: case 5: case 7: case 8: case 10: case 12: return 31; break;
+    case 2: return (IsLeapYear(Year)) ? 29 : 28; break;
+    default:return 30;
+    }
+}
+int ReadPositiveNumber(string Message)
+{
+    int Number;
+    do
+    {
+        cout << Message<<endl;
+        cin >> Number;
+    } while (Number<0);
+    return Number;
+}
+short NumberOfDaysSinceBegenningOfYear(short Year, short Month, short Day)
+{
+    short TotalDays = 0;
+    for (short i = 1; i <= Month - 1; i++)
+    {
+        TotalDays += DaysInMonth(Year, i);
+    }
+    TotalDays += Day;
+    return TotalDays;
+}
+stDate AddDaysOnDate(int DaysToAdd, stDate Date)
+{
+    short RemainingDays= DaysToAdd+NumberOfDaysSinceBegenningOfYear(Date.Year, Date.Month,Date.Day);
+    short MonthDays = 0;
+
+    Date.Month = 1;
+    while (true)
+    {
+        MonthDays = DaysInMonth(Date.Year, Date.Month);
+        if (RemainingDays > MonthDays)
+        {
+            RemainingDays -= MonthDays;
+            Date.Month++;
+            if (Date.Month > 12)
+            {
+                Date.Month = 1;
+                Date.Year++;
+            }
+        }
+        else
+        {
+            Date.Day = RemainingDays;
+            break;
+        }
+    }
+    return Date;
+}
+int main()
+{
+    int DaysToAdd;
+    stDate Date = ReadDate();
+    DaysToAdd = ReadPositiveNumber("Enter number of days to add:");
+    Date=AddDaysOnDate(DaysToAdd, Date);
+    printf("%d/%d/%d", Date.Day, Date.Month, Date.Year);
+    return 0;
+}

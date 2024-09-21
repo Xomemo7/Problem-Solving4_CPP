@@ -1,0 +1,76 @@
+#include<iostream>
+using namespace std;
+enum enDateCompare{Before=-1,After=1,Equal=0};
+struct stDate
+{
+	short Day;
+	short Month;
+	short Year;
+};
+short ReadDay()
+{
+	short Day;
+	cout << "\nPlease enter a Day? ";
+	cin >> Day; return Day;
+}
+short ReadMonth()
+{
+	short Month;
+	cout << "\nPlease enter a Month? ";
+	cin >> Month; return Month;
+}
+short ReadYear()
+{
+	short Year;
+	cout << "\nPlease enter a year? ";
+	cin >> Year;
+	return Year;
+}
+stDate ReadDate()
+{
+	stDate Date;
+	Date.Day = ReadDay();
+	Date.Month = ReadMonth();
+	Date.Year = ReadYear();
+	return  Date;
+}
+void PrintDate(stDate Date, string Text)
+{
+	cout << Text;
+	printf("%d/%d/%d\n", Date.Day, Date.Month, Date.Year);
+}
+bool AreDatesEqual(stDate Date1, stDate Date2)
+{
+	if (Date1.Year == Date2.Year && Date1.Month == Date2.Month && Date1.Day == Date2.Day)
+		return true;
+	return false;
+}
+bool IsDate1Before(stDate Date1, stDate Date2)
+{
+	return  (Date1.Year < Date2.Year) ? true : ((Date1.Year == Date2.Year) ?
+		(Date1.Month < Date2.Month ? true : (Date1.Month == Date2.Month ?
+			Date1.Day < Date2.Day : false)) : false);
+}
+bool IsDate1After(stDate Date1, stDate Date2)
+{
+	return (!IsDate1Before(Date1, Date2) && !AreDatesEqual(Date1, Date2));
+}
+short CompareDates(stDate Date1, stDate Date2)
+{
+	if (AreDatesEqual(Date1, Date2))
+		return Equal;
+	else if (IsDate1After(Date1, Date2))
+		return After;
+	else return Before;
+}
+int main()
+{
+	stDate Date1,Date2;
+	cout << "Date1:\n";
+	Date1 = ReadDate();
+	cout << "Date2:\n";
+	Date2 = ReadDate();
+	cout << CompareDates(Date1, Date2)<<endl;
+
+	return 0;
+}
